@@ -19,7 +19,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	pb.RegisterArticleServiceServer(grpcServer, articleService)
 
-	lis, err := net.Listen("tcp", "0.0.0.0::50052")
+	lis, err := net.Listen("tcp", "article-service:50052")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
