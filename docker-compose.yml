@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  user-service:
+    container_name: user-service
+    image: user-service:1.0.1
+    build:
+      dockerfile: user_service.Dockerfile
+    ports:
+      - "50051:50051"
+    environment:
+      - JWT_SECRET=7x!A%D*G-KaPdSgVkYp3s6v9y$B?E(H
+    networks:
+      - my_network
+  article-service:
+    container_name: article-service
+    image: article-service:1.0.1
+    build:
+      dockerfile: article_service.Dockerfile
+    ports:
+      - "50052:50052"
+    networks:
+      my_network:
+        aliases:
+          - article-service
+  api-gateway:
+    depends_on:
+      user-service:
+        condition: service_healthy
+      article-service:
+        condition: service_healthy
+    build:
+      dockerfile: api.Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - JWT_SECRET=7x!A%D*G-KaPdSgVkYp3s6v9y$B?E(H
+    restart: always
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge

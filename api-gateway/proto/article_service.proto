@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package article;
+option go_package = "internal/proto/article";
+
+service ArticleService {
+  rpc CreateArticle(CreateArticleRequest) returns (CreateArticleResponse);
+  rpc GetArticle(GetArticleRequest) returns (GetArticleResponse);
+  rpc UpdateArticle(UpdateArticleRequest) returns (UpdateArticleResponse);
+  rpc AddComment(AddCommentRequest) returns (AddCommentResponse);
+}
+
+message Article {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+  string author_id = 4;
+  repeated Comment comments = 5;
+}
+
+message Comment {
+  string id = 1;
+  string content = 2;
+  string author_id = 3;
+  string article_id = 4;
+}
+
+message CreateArticleRequest {
+  string title = 1;
+  string content = 2;
+  string author_id = 3;
+}
+
+message CreateArticleResponse {
+  Article article = 1;
+}
+
+message GetArticleRequest {
+  string id = 1;
+}
+
+message GetArticleResponse {
+  Article article = 1;
+}
+
+message UpdateArticleRequest {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+  string author_id = 4;
+}
+
+message UpdateArticleResponse {
+  Article article = 1;
+}
+
+message AddCommentRequest {
+  string article_id = 1;
+  string content = 2;
+  string author_id = 3;
+}
+
+message AddCommentResponse {
+  Comment comment = 1;
+}
